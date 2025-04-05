@@ -1,5 +1,5 @@
 import { authModel } from "./AuthSchema.js";
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 const ChangePassword = async (req, res) => {
     const { username, role } = req.userInfo;

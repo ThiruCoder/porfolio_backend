@@ -1,5 +1,5 @@
 import { authModel } from "./AuthSchema.js";
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 const Authentication = async (req, res) => {

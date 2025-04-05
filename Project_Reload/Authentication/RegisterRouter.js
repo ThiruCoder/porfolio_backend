@@ -1,5 +1,5 @@
 import { authModel } from './AuthSchema.js'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 const Registration = async (req, res) => {
     console.log(req.body);
