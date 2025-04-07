@@ -6,26 +6,49 @@ import { projectRoute } from './Project_Reload/ProjectsRouting/createRoute.js'
 import { authRouter } from './Project_Reload/Authentication/AuthRouter.js'
 import cookieParser from 'cookie-parser'
 // import { router } from './Project_Reload/pdfOrFile/DocumentRoute.js'
-import { router } from './Project_Reload/handlePdf/docsUpload.js'
+// import { router } from './Project_Reload/handlePdf/docsUpload.js'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import { pdfRouter } from './Project_Reload/pdfOrFile/pdfCounter/uploadPdf.js'
+import fs from 'fs'
 
 dotenv.config();
 const app = express();
+
+
+
+// Frontend Urls
+const frontendUrl = 'https://portfolio-frontend-92nm.onrender.com'
+const frontendtrilUrl = 'http://localhost:10000'
 
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors());
 app.use(cors({
-    origin: 'https://portfolio-frontend-92nm.onrender.com',
+    origin: frontendUrl,
 }));
+
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+app.use('/postpdf/getPdf', express.static(
+    path.join(__dirname, 'Project_Reload', 'pdfOrFile', 'pdfCounter', 'pdfs')
+));
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
-});
+
+const pdfsDir = path.join(
+    __dirname,
+    'Project_Reload',
+    'pdfOrFile',
+    'pdfCounter',
+    'pdfs'
+);
+
+if (!fs.existsSync(pdfsDir)) {
+    console.error('PDF directory not found:', pdfsDir);
+    process.exit(1);
+}
+app.use('/pdfs', express.static(pdfsDir));
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,7 +56,7 @@ DatabaseConnection();
 
 app.use('/project', projectRoute);
 app.use('/auth', authRouter);
-app.use('/postpdf', router)
+app.use('/postpdf', pdfRouter)
 
 const port = process.env.PORT || 5000;
 

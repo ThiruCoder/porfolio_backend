@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 
 const VerifyToken = (req, res, next) => {
-    const getTokenAddress = req.headers.authorization
+    const getTokenAddress = req.headers['authorization']
     if (!getTokenAddress) {
         res.status(401).json({
             meessage: "Token is required",

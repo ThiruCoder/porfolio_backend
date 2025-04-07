@@ -7,11 +7,7 @@ import { router } from '../pdfOrFile/DocumentRoute.js'
 const projectRoute = express.Router()
 
 projectRoute.post('/detail', uploads.single('image'), async (req, res) => {
-    const { title, description, url, status } = req.body;
-
-    // console.log('req.file', req.file);
-    // console.log('req.body', req.body);
-
+    const { title, description, url, status, tags } = req.body;
 
     try {
         if (!req.file) {
@@ -20,28 +16,6 @@ projectRoute.post('/detail', uploads.single('image'), async (req, res) => {
                 message: 'File is required. Please upload an image.'
             })
         }
-        // console.log('req.file', req.file.path);
-        // console.log(req.file.path);
-
-        // const { Image_url, publicId } = await uploadFile(req.body.image)
-        const { result } = await uploadFile(req.file.path)
-        const { display_name, secure_url, public_id } = result;
-
-        const passtodb = await ProjectModel.create({
-            title: title,
-            description: description,
-            url: url,
-            status: status,
-            image: {
-                name: display_name,
-                url: secure_url,
-                public_id: public_id
-            }
-        })
-        res.status(201).json({
-            data: passtodb,
-            message: 'success'
-        })
 
         // ✅ Check if all required fields are present
         if (!title || !description || !url || !status) {
@@ -50,17 +24,42 @@ projectRoute.post('/detail', uploads.single('image'), async (req, res) => {
                 success: false
             });
         }
+        // console.log('req.file', req.file.path);
+        // console.log(req.file.path);
 
+        // const { Image_url, publicId } = await uploadFile(req.body.image)
+        const { result } = await uploadFile(req.file.path)
+        const { display_name, secure_url, public_id } = result;
 
+        if (!Array.isArray(tags)) {
+            return res.status(400).json({ error: "Tags must be an array" });
+        }
 
-        const projectDetails = await ProjectModel.create({ title: title, description: description, url: url, status: status, image: [Image_url, publicId] });
+        // Process tags (optional)
+        const cleanTags = [...new Set(tags.map(tag => tag.trim()).filter(Boolean))];
+
+        const projectDetails = await ProjectModel.create({
+            title: title,
+            description: description,
+            url: url,
+            status: status,
+            tags: cleanTags,
+            image: {
+                name: display_name,
+                url: secure_url,
+                public_id: public_id
+            }
+        })
         res.status(201).json({
             data: projectDetails,
             message: 'Successfully submitted the data.',
             success: true
         })
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Someething went wrong! Please try again later.' });
+        res.status(500).json({ success: false, message: 'Something went wrong! Please try again later.' });
+        console.log('Error with 500', error);
+
+        new Error(`New error found is project creation : ${error}`)
     }
 
 })

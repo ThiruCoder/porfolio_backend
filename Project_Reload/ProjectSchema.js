@@ -35,6 +35,7 @@ const ProjectDatabaseSchema = new mongoose.Schema({
         enum: ["Pending", "In Progress", "Completed"],
         default: "Pending",
     },
+    tags: { type: [String], default: [] },
     startDate: {
         type: Date,
         default: Date.now,
@@ -48,6 +49,7 @@ const ProjectDatabaseSchema = new mongoose.Schema({
         default: Date.now,
     },
 })
+// ProjectDatabaseSchema.index({ tags: 'text' });
 
 const ProjectModel = mongoose.model('Project', ProjectDatabaseSchema)
 export default ProjectModel;
