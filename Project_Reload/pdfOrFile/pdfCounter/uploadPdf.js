@@ -24,16 +24,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 pdfRouter.post('/uploadfpdf', PDFValidation, upload.single('file'), async (req, res) => {
-    console.log(req.body.title);
-    console.log(req.file);
-
 
     try {
 
         const { title } = req.body
         const filename = req.file.filename
         if (!filename || !title) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: 'Title and pdf is required!',
                 success: false
             })
@@ -44,14 +41,14 @@ pdfRouter.post('/uploadfpdf', PDFValidation, upload.single('file'), async (req, 
             pdf: filename,
         })
 
-        res.status(201).json({
+        return res.status(201).json({
             data: formData,
             message: 'Successfully created pdf data',
             success: true
         })
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             message: 'Something went wrong, Please try again later.',
             success: false
         })
@@ -62,13 +59,13 @@ pdfRouter.post('/uploadfpdf', PDFValidation, upload.single('file'), async (req, 
 pdfRouter.get('/getPdf', async (req, res) => {
     try {
         const pdfData = await pdfModel.find({})
-        res.status(200).json({
+        return res.status(200).json({
             data: pdfData,
             message: 'Successfully found all data.',
             success: true
         })
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             message: 'Something weent wrong! please try again later.',
             success: false
         })
@@ -81,7 +78,7 @@ pdfRouter.delete('/deletePdf/:id', async (req, res) => {
 
     try {
         if (!id) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: 'Id is not found, please try with id',
                 success: false
             })
@@ -117,7 +114,7 @@ pdfRouter.delete('/deletePdf/:id', async (req, res) => {
 
             // Then delete database record
             const deletedItem = await pdfModel.findByIdAndDelete(id);
-            res.status(201).json({
+            return res.status(201).json({
                 data: deletedItem,
                 message: 'Successfully deleted the data.',
                 success: true
@@ -131,7 +128,7 @@ pdfRouter.delete('/deletePdf/:id', async (req, res) => {
     } catch (error) {
         console.log(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: 'Something went wrong please try again.',
             success: false
         })

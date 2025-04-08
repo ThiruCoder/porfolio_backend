@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url'
 import path from 'path'
 import { pdfRouter } from './Project_Reload/pdfOrFile/pdfCounter/uploadPdf.js'
 import fs from 'fs'
+import { libRoute } from './Project_Reload/LibraryPoint/libraryRoute.js'
 
 dotenv.config();
 const app = express();
@@ -18,14 +19,14 @@ const app = express();
 
 
 // Frontend Urls
-const frontendUrl = 'https://portfolio-frontend-92nm.onrender.com'
-const frontendtrilUrl = 'http://localhost:10000'
+const backendUrl = 'https://portfolio-frontend-92nm.onrender.com'
+const backendtrilUrl = 'http://localhost:10000'
 
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors());
 app.use(cors({
-    origin: frontendUrl,
+    origin: backendUrl,
 }));
 
 
@@ -57,6 +58,7 @@ DatabaseConnection();
 app.use('/project', projectRoute);
 app.use('/auth', authRouter);
 app.use('/postpdf', pdfRouter)
+app.use('/postLib', libRoute)
 
 const port = process.env.PORT || 5000;
 

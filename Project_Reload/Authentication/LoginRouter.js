@@ -9,7 +9,7 @@ const Authentication = async (req, res) => {
         console.log('LoginFormData', username, password);
 
         if (!username || !password) {
-            res.status(401).json({
+            return res.status(401).json({
                 success: false,
                 message: 'Username or password is not specified!'
             })
@@ -18,7 +18,7 @@ const Authentication = async (req, res) => {
 
         const passwordReveal = await bcrypt.compare(password, user.password)
         if (!passwordReveal) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: 'Password is invalid, please try again later',
                 success: false
             })
@@ -26,7 +26,7 @@ const Authentication = async (req, res) => {
 
         const jwtSecretKey = process.env.JWT_SECRET_KEY;
         if (!jwtSecretKey) {
-            res.status(404).json({
+            return res.status(404).json({
                 message: 'Server error: TOKEN_ID is missing in .env',
                 success: false
             })
@@ -49,7 +49,7 @@ const Authentication = async (req, res) => {
         });
         console.log(createToken);
 
-        res.status(201).json({
+        return res.status(201).json({
             token: createToken,
             username: username,
             loggedIn: true,
@@ -59,7 +59,7 @@ const Authentication = async (req, res) => {
 
     } catch (error) {
         console.log('login Error', error);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: 'Something went wrong, please try again!'
         })

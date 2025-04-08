@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 const AuthMiddleware = (req, res, next) => {
     const getTokenAddress = req.headers['authorization']
     if (!getTokenAddress) {
-        res.status(401).json({
+        return res.status(401).json({
             meessage: "Token is required",
             success: false
         })
@@ -12,7 +12,7 @@ const AuthMiddleware = (req, res, next) => {
     try {
         const token = getTokenAddress && getTokenAddress.split(' ')[1]
         if (!token) {
-            res.status(401).json({
+            return res.status(401).json({
                 meessage: "Token is missed",
                 success: false
             })
@@ -41,7 +41,7 @@ const AuthMiddleware = (req, res, next) => {
 
     } catch (e) {
         console.log(new Error(`Error from AuthMiddleware ${e}`));
-        res.status(500).json({
+        return res.status(500).json({
             meessage: 'Something went wrong please try again later!',
             success: false
         })

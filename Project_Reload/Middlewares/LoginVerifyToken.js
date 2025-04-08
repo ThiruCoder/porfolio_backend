@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 const VerifyToken = (req, res, next) => {
     const getTokenAddress = req.headers['authorization']
     if (!getTokenAddress) {
-        res.status(401).json({
+        return res.status(401).json({
             meessage: "Token is required",
             success: false
         })
@@ -12,7 +12,7 @@ const VerifyToken = (req, res, next) => {
     try {
         const token = getTokenAddress && getTokenAddress.split(' ')[1]
         if (!token) {
-            res.status(401).json({
+            return res.status(401).json({
                 meessage: "Token is missed",
                 success: false
             })
@@ -23,7 +23,7 @@ const VerifyToken = (req, res, next) => {
         req.logToken = jwtToken
         next();
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             loggedIn: false,
             message: 'Something went wrong, try again later!'
         })
