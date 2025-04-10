@@ -20,13 +20,13 @@ const app = express();
 
 // Frontend Urls
 const backendUrl = 'https://portfolio-frontend-92nm.onrender.com'
-const backendtrilUrl = 'http://localhost:10000'
+const backendTrilUrl = 'http://localhost:10000'
 
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors());
 app.use(cors({
-    origin: backendUrl,
+    origin: backendUrl, // Frontend URL
 }));
 
 
