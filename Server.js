@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors());
 app.use(cors({
-    origin: backendUrl, // Frontend URL
+    origin: backendUrl || backendTrilUrl // Frontend URL
 }));
 
 
