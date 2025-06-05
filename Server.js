@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { DatabaseConnection } from './Project_Reload/DatabaseConnection.js'
-import { projectRoute } from './Project_Reload/ProjectsRouting/createRoute.js'
 import { authRouter } from './Project_Reload/Authentication/AuthRouter.js'
 import cookieParser from 'cookie-parser'
 // import { router } from './Project_Reload/pdfOrFile/DocumentRoute.js'
@@ -12,6 +11,9 @@ import path from 'path'
 import { pdfRouter } from './Project_Reload/pdfOrFile/pdfCounter/uploadPdf.js'
 import fs from 'fs'
 import { libRoute } from './Project_Reload/LibraryPoint/libraryRoute.js'
+import { resumeRouter } from './Project_Reload/ProjectsRouting/ResumeRouting/router.js'
+import { projectRouter } from './Project_Reload/ProjectsRouting/ProjectRoutes/Router_Publisher.js'
+import { sendMailRouter } from './Project_Reload/Mail_Routing/publisher_Router.js'
 
 dotenv.config();
 const app = express();
@@ -19,15 +21,28 @@ const app = express();
 
 
 // Frontend Urls
-const backendUrl = 'https://portfolio-frontend-92nm.onrender.com'
-const backendTrilUrl = 'http://localhost:10000'
+const frontendUrls = [
+    'https://portfolio-frontend-92nm.onrender.com',
+    'http://localhost:3000',
+]
 
 app.use(express.json());
-app.use(cookieParser())
+app.use(cookieParser());
 app.use(cors());
-app.use(cors({
-    origin: backendUrl || backendTrilUrl // Frontend URL
-}));
+const corsOptions = {
+    origin: (origin, callback) => {
+
+        if (!origin || frontendUrls.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+};
+
+app.use(cors(corsOptions));
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -55,10 +70,12 @@ app.use(express.urlencoded({ extended: true }));
 
 DatabaseConnection();
 
-app.use('/project', projectRoute);
+app.use('/project', projectRouter);
 app.use('/auth', authRouter);
-app.use('/postpdf', pdfRouter)
-app.use('/postLib', libRoute)
+app.use('/postpdf', pdfRouter);
+app.use('/postLib', libRoute);
+app.use('/resume', resumeRouter);
+app.use('/send', sendMailRouter);
 
 const port = process.env.PORT || 5000;
 

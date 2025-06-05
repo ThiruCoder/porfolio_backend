@@ -35,6 +35,11 @@ const ProjectDatabaseSchema = new mongoose.Schema({
         enum: ["Pending", "In Progress", "Completed"],
         default: "Pending",
     },
+    priority: {
+        type: String,
+        enum: ['Low', 'Medium', 'High'],
+        default: 'Medium'
+    },
     tags: { type: [String], default: [] },
     startDate: {
         type: Date,

@@ -39,15 +39,15 @@ const Authentication = async (req, res) => {
             loggedIn: true
         },
             jwtSecretKey,
-            { expiresIn: '1d' },
+            { expiresIn: '7d' },
         )
         res.cookie("token", createToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            maxAge: 60 * 60 * 1000,
-            path: '/'
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: '/',
+            sameSite: "Strict",
         });
-        console.log(createToken);
 
         return res.status(201).json({
             token: createToken,
