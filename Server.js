@@ -24,6 +24,7 @@ const app = express();
 const frontendUrls = [
     'https://portfolio-frontend-92nm.onrender.com',
     'http://localhost:3000',
+    'https://portfolio-tau-inky-84.vercel.app/'
 ]
 
 app.use(express.json());
