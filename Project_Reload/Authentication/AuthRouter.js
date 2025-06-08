@@ -18,7 +18,7 @@ authRouter.post('/login', Authentication);
 authRouter.post('/tokenVerify', TokenVerify);
 authRouter.post('/logout', VerifyToken, GetLogout);
 authRouter.post('/wellcome', AuthMiddleware);
-authRouter.post('/admin', AuthMiddleware, AdminMiddleware, AdminAuth);
+authRouter.post('/admin', VerifyToken, AdminMiddleware, AdminAuth);
 // authRouter.post('/adminLogout', AuthMiddleware, AdminMiddleware, LoggedOut);
 authRouter.post('/changePass', AuthMiddleware, AdminMiddleware, ChangePassword);
 
