@@ -1,9 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
-import { uploadFile } from '../cloudinaryUpload.js';
+import { cloudinary, uploadFile } from '../cloudinaryUpload.js';
 import ProjectModel from '../../ProjectSchema.js';
-import { cloudinary } from '../CloudinaryConfig.js';
 
 const createProject = async (req, res) => {
     let { name, description, url, status, tags, priority } = req.body;
@@ -96,7 +95,6 @@ const createProject = async (req, res) => {
 };
 
 const getProject = async (req, res) => {
-
     try {
         const projectData = await ProjectModel.find({});
         return res.status(200).json({

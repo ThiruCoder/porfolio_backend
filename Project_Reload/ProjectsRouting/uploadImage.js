@@ -1,5 +1,4 @@
 import multer from 'multer'
-import ProjectModel from '../ProjectSchema.js'
 import path from 'path'
 import { fileURLToPath } from 'url'
 

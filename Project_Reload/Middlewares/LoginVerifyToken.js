@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 
+
 const VerifyToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
     if (!authHeader) {

@@ -1,6 +1,8 @@
 import { authModel } from "./AuthSchema.js";
 import * as bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import dot from 'dotenv';
+dot.config();
 
 const Authentication = async (req, res) => {
     try {

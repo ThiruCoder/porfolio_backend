@@ -1,5 +1,8 @@
 import { authModel } from './AuthSchema.js'
 import * as bcrypt from 'bcryptjs'
+import dot from 'dotenv';
+dot.config();
+
 
 const Registration = async (req, res) => {
     console.log(req.body);

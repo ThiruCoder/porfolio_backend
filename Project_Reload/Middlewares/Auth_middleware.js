@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken'
+import dot from 'dotenv';
+dot.config();
 
 const AuthMiddleware = (req, res, next) => {
     const getTokenAddress = req.headers['authorization']
@@ -47,7 +49,6 @@ const AuthMiddleware = (req, res, next) => {
         })
     }
 }
-
 
 
 const TokenVerify = (req, res, next) => {

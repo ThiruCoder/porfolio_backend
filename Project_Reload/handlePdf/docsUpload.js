@@ -4,7 +4,8 @@ import { v2 as cloudinary } from 'cloudinary';
 import { upload } from './middleware/docsMiddleware.js';
 import { PDF } from './middleware/DocsSchema.js';
 // Get basic preview (first page thumbnail)
-
+import dot from 'dotenv';
+dot.config();
 const router = express.Router()
 
 router.post('/upload-with-preview', upload.single('pdf'), async (req, res) => {

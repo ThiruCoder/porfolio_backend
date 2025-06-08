@@ -1,4 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
+import dot from 'dotenv';
+dot.config();
 
 
 // Configure Cloudinary for PDF uploads
